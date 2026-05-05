@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kameshwar Foundation | Dynamic Animated Demo</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <style>
+        :root {
+            --text-main: #ffffff;
+            --text-muted: #cbd5e1;
+            /* Modern Neon Theme Palette */
+            --accent-gradient: linear-gradient(135deg, #00f2fe, #4facfe, #f093fb, #f5576c);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --neon-glow: 0 0 20px rgba(79, 172, 254, 0.6);
+        }
+
+        /* Prevent Horizontal Scroll Issues completely */
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* DYNAMIC ANIMATED BACKGROUND */
+        body {
+            background: linear-gradient(-45deg, #050b14, #1a0b2e, #0f172a, #001220);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-main);
+            line-height: 1.6;
+            position: relative;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* STAR AND FOG ANIMATIONS */
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .fog-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.5;
+            z-index: -1;
+            animation: floatFog 20s infinite alternate ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes floatFog {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(100px, -100px) scale(1.2); }
+            100% { transform: translate(-50px, 50px) scale(0.9); }
+        }
+
+        /* Glassmorphism Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 25, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 9999;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            transition: all 0.4s ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            z-index: 10001;
+        }
+
+        .logo img {
+            height: 40px;
+            border-radius: 8px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Desktop Nav Links */
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--accent-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: #4facfe; }
+
+        /* Hamburger Menu Icon */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 10001;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            width: 28px;
+            height: 3px;
+            background-color: white;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        section {
+            padding: 120px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+            text-align: center;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        /* Hero Section */
+        #home {
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        #home h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(255,255,255,0.2);
+            padding: 0 10px;
+        }
+
+        #home p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 40px;
+            padding: 0 15px;
+        }
+
+        .btn {
+            background: var(--accent-gradient);
+            background-size: 200% auto;
+            color: white;
+            padding: 12px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.5s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-position: right center;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: var(--neon-glow);
+        }
+
+        /* Glass Cards */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 25px;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            width: 100%;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px);
+            border-color: #4facfe;
+            box-shadow: 0 15px 30px rgba(79, 172, 254, 0.2);
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+            transform: skewX(-25deg);
+            transition: all 0.7s;
+        }
+
+        .glass-card:hover::before { left: 125%; }
+
+        .founder-img {
+            width: 100%;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: transform 0.4s;
+        }
+
+        .glass-card:hover .founder-img {
+            transform: scale(1.03);
+            border-color: #f093fb;
+        }
+
+        .article-text {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            line-height: 1.9;
+            margin-bottom: 20px;
+        }
+
+        .article-text strong { color: var(--text-main); }
+
+        .social-grid, .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #4facfe;
+            background: rgba(255,255,255,0.1);
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            background: rgba(5, 5, 15, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .dev-credit {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* --- MOBILE RESPONSIVE DESIGN --- */
+        @media (max-width: 991px) {
+            .hamburger { display: flex !important; }
+
+            .nav-links {
+                position: fixed;
+                top: 0; right: -100%;
+                height: 100vh; width: 280px; max-width: 80vw;
+                background: rgba(10, 10, 25, 0.98);
+                backdrop-filter: blur(25px);
+                flex-direction: column; justify-content: center;
+                transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                border-left: 1px solid var(--glass-border);
+                z-index: 10000;
+                box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            }
+
+            .nav-links.active { right: 0; }
+            .hamburger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+            #home h1 { font-size: 2.5rem; line-height: 1.3; }
+            #home p { font-size: 1rem; }
+            .section-title { font-size: 2.2rem; margin-bottom: 30px; }
+            section { padding: 80px 5%; }
+            
+            .bento-grid { grid-template-columns: 1fr; }
+            .glass-card { padding: 25px; }
+            
+            #home div[style*="display: flex"] {
+                flex-direction: column; width: 100%; padding: 0 20px;
+            }
+            #home .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="fog-orb" style="width: 400px; height: 400px; background: rgba(79, 172, 254, 0.2); top: -10%; left: -10%;"></div>
+    <div class="fog-orb" style="width: 500px; height: 500px; background: rgba(240, 147, 251, 0.2); bottom: -10%; right: -10%; animation-delay: 2s;"></div>
+
+    <canvas id="background-canvas"></canvas>
+
+    <nav id="navbar">
+        <div class="logo">
+            <img src="kf.jpg" alt="KF Logo">
+            <span>Kameshwar<br><small style="font-size: 0.6rem; font-weight: 400; color: #cbd5e1;">Foundation</small></span>
+        </div>
+        
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#work">Impact</a></li>
+            <li><a href="#media">Social</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li style="margin-top: 10px;"><a href="#contact" class="btn" style="padding: 8px 20px; font-size: 0.9rem; border-radius: 50px;">Join Us</a></li>
+        </ul>
+    </nav>
+
+    <section id="home">
+        <h1 data-aos="zoom-out" data-aos-duration="1500">Empowering Lives,<br>Igniting Hope.</h1>
+        <p data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300">A new generation non-profit focused on creating real, grassroots change for the underprivileged communities in Bihar.</p>
+        <div style="display: flex; gap: 15px; justify-content: center;" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="600">
+            <a href="#work" class="btn">Discover Our Work</a>
+            <a href="https://www.instagram.com/kameshwarfoundation/reel/DXzeLkHBhqQ/" target="_blank" class="btn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); box-shadow: none;">Watch Video</a>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2 class="section-title" data-aos="fade-down" data-aos-duration="1000">Who We Are</h2>
+        <div class="bento-grid">
+            <div class="glass-card" data-aos="fade-right" data-aos-duration="1200">
+                <img src="ky.jpg" alt="Kameshwar Yadav" class="founder-img">
+                <h3 style="font-size: 1.5rem; margin-bottom: 5px;">Kameshwar Yadav</h3>
+                <p style="color: #f093fb; font-weight: 600;">Founder & Director</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 10px;">Dedicated social worker driving positive change and upliftment in Bihar.</p>
+            </div>
+            
+            <div class="glass-card" data-aos="fade-left" data-aos-duration="1200" style="display: flex; flex-direction: column; justify-content: center;">
+                <h3 style="font-size: 2rem; margin-bottom: 15px; color: #4facfe;">Official Registry Details</h3>
+                <p class="article-text">We believe in complete transparency. Kameshwar Foundation is a registered non-profit working relentlessly for the betterment of society.</p>
+                <ul style="list-style: none; color: var(--text-muted); line-height: 2.2; margin-top: 10px; font-size: 1.1rem;">
+                    <li><strong style="color:white">CIN:</strong> U88900BR2026NPL081824</li>
+                    <li><strong style="color:white">Incorporated:</strong> 21st January, 2026</li>
+                    <li><strong style="color:white">Directors:</strong> Madan Kumar, Kameshwar Yadav</li>
+                    <li><strong style="color:white">Capital:</strong> ₹50,000</li>
+                    <li><strong style="color:white">Base:</strong> Vill- Araila, Block Hanuman Nagar, Darbhanga, Bihar (847106)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="work">
+        <h2 class="section-title" data-aos="fade-up" data-aos-duration="1000">Our Impact & Mission</h2>
+        <div class="glass-card" data-aos="zoom-in-up" data-aos-duration="1200">
+            <p class="article-text">
+                At the <strong style="color: #f093fb;">Kameshwar Foundation</strong>, our mission transcends basic charity; we believe in sustainable empowerment. Millions of people struggle daily for basic necessities, healthcare, and education. As dedicated social workers, our team operates at the grassroots level to identify marginalized families and impoverished individuals who have fallen through the cracks of society.
+            </p>
+            <p class="article-text">
+                We act as a bridge between hardship and hope. Whether it is organizing food distribution drives for the hungry, providing winter clothing to the homeless, or facilitating essential healthcare awareness, every initiative is fueled by human compassion. 
+            </p>
+            <p class="article-text">
+                We envision a society where every individual, regardless of their financial background, has the opportunity to smile and dream. Our foundation isn't just about providing aid—it's about holding hands, offering a shoulder to lean on, and building a self-reliant community together.
+            </p>
+        </div>
+    </section>
+
+    <section id="media">
+        <h2 class="section-title" data-aos="fade-down" data-aos-duration="1000">Catch Us in Action</h2>
+        <div class="social-grid">
+            <div class="glass-card" data-aos="flip-left" data-aos-duration="1200" style="text-align: center;">
+                <h3 style="font-size: 1.5rem; color: #4facfe;">Instagram Community</h3>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Follow our daily journeys and social drives.</p>
+                <a href="https://www.instagram.com/kameshwarfoundation/" target="_blank" class="btn">Profile @kameshwarfoundation</a>
+            </div>
+            <div class="glass-card" data-aos="flip-right" data-aos-duration="1200" data-aos-delay="200" style="text-align: center;">
+                <h3 style="font-size: 1.5rem; color: #f093fb;">Featured Reel</h3>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Watch our latest impact video.</p>
+                <a href="https://www.instagram.com/kameshwarfoundation/reel/DXzeLkHBhqQ/" target="_blank" class="btn" style="background: transparent; border: 2px solid #f093fb;">Watch Reel</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="section-title" data-aos="zoom-in" data-aos-duration="1000">Get In Touch</h2>
+        <div class="contact-container">
+            <div class="glass-card" data-aos="slide-right" data-aos-duration="1200">
+                <h3 style="margin-bottom: 25px; font-size: 2rem;">Send a Message</h3>
+                <form id="contactForm" onsubmit="sendToWhatsApp(event)">
+                    <input type="text" id="userName" placeholder="Your Name" required>
+                    <input type="email" id="userEmail" placeholder="Your Email" required>
+                    <textarea id="userMsg" placeholder="How would you like to contribute or connect?" rows="5" required></textarea>
+                    
+                    <button type="submit" class="btn" style="width: 100%; font-size: 1.1rem; background: #25D366; color: white;">
+                        Send to WhatsApp 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.88-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.347-.272.297-1.04 1.016-1.04 2.479 0 1.463 1.065 2.876 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+            <div class="glass-card" data-aos="slide-left" data-aos-duration="1200" style="display: flex; flex-direction: column; justify-content: center;">
+                <h3 style="margin-bottom: 25px; font-size: 2rem; color: #4facfe;">Contact Info</h3>
+                <div style="margin-bottom: 20px;">
+                    <p style="color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Email</p>
+                    <a href="mailto:kameshwarfoundation@gmail.com" style="color: #f8fafc; text-decoration: none; font-size: 1.1rem; transition: color 0.3s; word-break: break-all;">kameshwarfoundation@gmail.com</a>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <p style="color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Address</p>
+                    <p style="color: #f8fafc; font-size: 1.1rem;">Panch-araila Vill- Araila, Block Hanuman Nagar, Darbhanga, Bihar, India (847106)</p>
+                </div>
+                <div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Phone / WhatsApp</p>
+                    <p style="color: #f093fb; font-size: 1.2rem; font-weight: 600;">+91 8757490154</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Kameshwar Foundation. All rights reserved.</p>
+        <p style="margin-top: 15px; font-size: 1rem;">Developed with ❤️ by <span class="dev-credit">Satyam Kumar</span></p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        // Initialize AOS Animations
+        AOS.init({ once: true, offset: 100 });
+
+        // Hamburger Menu Logic
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        const navItems = document.querySelectorAll('.nav-links a');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // WhatsApp Integration (Updated to mention Kameshwar Foundation)
+        function sendToWhatsApp(event) {
+            event.preventDefault();
+            let name = document.getElementById('userName').value;
+            let email = document.getElementById('userEmail').value;
+            let msg = document.getElementById('userMsg').value;
+
+            let whatsappMessage = `Hello Kameshwar Foundation!%0A%0A*Name:* ${name}%0A*Email:* ${email}%0A%0A*Message:* ${msg}`;
+            let phoneNumber = "918757490154"; // CHANGE THIS NUMBER IF NEEDED
+            window.open(`https://wa.me/${phoneNumber}?text=${whatsappMessage}`, '_blank');
+        }
+
+        // Custom Star Animation Logic
+        const canvas = document.getElementById('background-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, stars = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        for (let i = 0; i < 150; i++) {
+            stars.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                radius: Math.random() * 1.5,
+                speed: Math.random() * 0.5 + 0.1,
+                opacity: Math.random()
+            });
+        }
+
+        function drawStars() {
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.globalAlpha = star.opacity;
+                ctx.fill();
+                
+                star.y -= star.speed;
+                star.opacity += (Math.random() - 0.5) * 0.1;
+                star.opacity = Math.max(0.2, Math.min(1, star.opacity));
+
+                if (star.y < 0) {
+                    star.y = height;
+                    star.x = Math.random() * width;
+                }
+            });
+            requestAnimationFrame(drawStars);
+        }
+        drawStars();
+    </script>
+</body>
+</html>

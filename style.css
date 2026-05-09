@@ -1,0 +1,102 @@
+/* Color Palette based on Kameshwar Foundation Logo */
+:root {
+    --primary-blue: #0047AB; /* Deep Blue from logo */
+    --primary-orange: #FF7F00; /* Orange from logo */
+    --primary-green: #008000; /* Green from logo text */
+    --dark-bg: #1a233a; /* Dark background from reference image */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+}
+
+/* Typography Colors */
+.text-blue { color: var(--primary-blue) !important; }
+.text-orange { color: var(--primary-orange) !important; }
+.text-green { color: var(--primary-green) !important; }
+
+/* Navbar */
+.navbar-nav .nav-link {
+    color: var(--primary-blue);
+    margin: 0 10px;
+    transition: 0.3s;
+}
+.navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+    color: var(--primary-orange);
+}
+.btn-donate {
+    background-color: #d9534f; /* Donate button red/pink */
+    color: white;
+    border-radius: 5px;
+    padding: 8px 20px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.btn-donate:hover {
+    background-color: var(--primary-orange);
+    color: white;
+}
+
+/* Hero Carousel */
+.hero-img {
+    height: 80vh;
+    object-fit: cover;
+    filter: brightness(0.5); /* Darkens image so text is readable */
+}
+.carousel-caption h2 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+}
+.carousel-caption p {
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+
+/* Image Border styling */
+.border-bottom-orange {
+    border-bottom: 5px solid var(--primary-orange);
+}
+
+/* Impact Section */
+.impact-section {
+    background-color: var(--dark-bg);
+}
+.border-orange-badge {
+    border: 1px solid var(--primary-orange);
+}
+.impact-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 30px 20px;
+    transition: transform 0.3s;
+}
+.impact-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary-orange);
+}
+
+/* Footer Styling */
+.footer {
+    background-color: var(--dark-bg);
+}
+.footer-heading {
+    color: white;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.footer-links li {
+    margin-bottom: 10px;
+}
+.footer-links a {
+    color: #a0aabf;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.footer-links a:hover {
+    color: var(--primary-orange);
+    padding-left: 5px;
+}
